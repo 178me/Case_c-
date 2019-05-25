@@ -23,15 +23,15 @@ public:
 	//显示扑克牌数组
 	void Show_card(const vector<int>&);
 	//玩家摸牌
-	void Touch_Card(int Card_count);
+	void Touch_Card(const int& Card_count);
 	//卡牌的花色
 //	string Colors_card(int card);
 	//卡牌的值
-	string Value_card(int card);
+	string Value_card(const int& card);
 	//卡牌的排序
 	void Sort_card(vector<int>&);
 	//卡牌的对比
-	int Contrast_card(int&, int&);
+	int Contrast_card(const int&,const int&);
 	//玩家出牌
 	int Deal_card();
 	//游戏实现

@@ -49,7 +49,7 @@ void Size_contrast::Show_card(const vector<int>&temp_card)
 	cout << endl;
 }
 
-void Size_contrast::Touch_Card(int Card_count)
+void Size_contrast::Touch_Card(const int& Card_count)
 {
 	/**
 	 *1、从牌堆里随机获得卡牌;这里需要随机函数
@@ -78,7 +78,7 @@ string Size_contrast::Colors_card(int card)
 		return colors[card % 4];
 }*/
 
-string Size_contrast::Value_card(int card)
+string Size_contrast::Value_card(const int &card)
 {
 	/**
 	 *定义一个字符串数组存储牌值
@@ -87,7 +87,6 @@ string Size_contrast::Value_card(int card)
 	 *本来想显示符号，但是显示不出来，只好用中文了
 	 **/
 	string value[15]{"3","4","5","6","7" ,"8" ,"9" ,"10" ,"J" ,"Q" ,"K" ,"A" ,"2","小王","大王" };
-	if (card < 0)	card = 0;
 	if (card == 13) {
 		return value[13];
 	}
@@ -105,7 +104,7 @@ void Size_contrast::Sort_card(vector<int>&temp_card)
 	sort(temp_card.begin(),temp_card.end(),greater<int>());
 }
 
-int Size_contrast::Contrast_card(int&num1,int&num2)
+int Size_contrast::Contrast_card(const int&num1,const int&num2)
 {
 /**
  *选择出牌
@@ -114,7 +113,7 @@ int Size_contrast::Contrast_card(int&num1,int&num2)
  **/
 	if (num1 > num2)		return 1;
 	if (num1 < num2)		return 2;
-	return 0;
+	if(num1 == num2)		return 0;
 }
 
 int Size_contrast::Deal_card()
@@ -150,11 +149,11 @@ void Size_contrast::Game()
 	 **/
 	string temp_name;		//存储玩家昵称的临时变量
 	int choice,num1,num2,score1 = 0,score2 = 0;		//choice用来接收比大小的一个结果，num1,num2用来接收玩家和系统出的牌；后面两个记录分数
-	int num1_Index;		//玩家出的牌下标
+	int num1_Index,num2_Index;		//玩家出的牌下标
 	char b = 'y';		//控制是否继续游戏的变量
 	srand((unsigned)time(NULL));		//用时间做种子，生成随机数字
 		cout << "游戏名:扑克牌比大小" << endl;
-		cout << "游戏规则:一共有54张牌，玩家抽取十五张牌，系统取剩下的，然后各出一张牌比大小。" << endl;
+		cout << "游戏规则:一共有54张牌，玩家抽取十五张牌，系统取剩下的，然后各出一张牌比大小,同大玩家胜。" << endl;
 		cout << "注意:出牌的下标是从左到右计算，最左边的一张牌为1，后面的以此类推。" << endl;
 		system("pause");		//此方法暂停
 		cout << "游戏开始" << endl;
@@ -169,14 +168,16 @@ void Size_contrast::Game()
 		cout << "注意:出牌的下标是从左到右计算，最左边的一张牌为1，后面的以此类推。" << endl << endl;
 		Show_info();		//展示个人信息
 		cout << endl;
+		num2_Index = rand() % Card_pile.size();		//获取下标
+		num2 = this->Card_pile[num2_Index];		//系统随机抽一张牌
+		cout << num2;
 		cout << "请输入你要出的牌的下标:";
 		num1_Index = Deal_card();		//获取下标
 		num1 = Card_hand[num1_Index];		//玩家出的牌
-		num2 = this->Card_pile[rand() % Card_pile.size()];		//系统随机抽一张牌
 		this->Card_hand.erase(Card_hand.begin()+num1_Index);		//删除玩家出的牌
 		choice = Contrast_card(num1,num2);		//接受比较结果  有1，2，0三种结果  对应下面的三个if
 		cout << endl;
-		cout << "系统玩家的牌是：" << Value_card(num2) << endl;		//显示系统所出的牌
+		cout << "系统玩家的牌是：" << Value_card(num2-1) << endl << endl;		//显示系统所出的牌
 		if (choice == 1) {
 			cout << this->_name << "获得一分" << endl;
 			score1++;
@@ -185,15 +186,20 @@ void Size_contrast::Game()
 			cout << "系统玩家" << "获得一分" << endl;
 			score2++;
 		}
-		if (choice == 0) { cout << "双方一样大" << endl; }
+		if (choice == 0) {
+			cout << "双方一样大" << _name << "获得一分" << endl;
+			score1++;
+		}
+		cout << endl;
 		//游戏结果判定：当手牌数为0是，进入结局：分数大于系统，win，否则输
 		if (this->Card_hand.empty()) {
-			cout << "游戏结束！" << endl;
-			cout << _name << "的分数是" << score1 << endl;
-			cout << "系统玩家" << "的分数是" << score2 << endl;
-			if (score1 > score2) { cout << _name << "获胜" << endl; }
+			system("cls");
+			cout << "游戏结束！" << endl << endl;
+			cout << _name << "的分数是" << score1 << endl << endl;
+			cout << "系统玩家" << "的分数是" << score2 << endl << endl;
+			if (score1 > score2) { cout << _name << "获胜" << endl << endl; }
 			else {
-				cout << "你输了,再接再厉吧！" << endl;
+				cout << "你输了,再接再厉吧！" << endl << endl;
 			}
 			cout << "是否继续游戏(y/n)";		//提示是否继续游戏
 			cin >> b;

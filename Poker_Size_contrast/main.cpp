@@ -5,8 +5,6 @@
  **/
 #include <iostream>
 #include "Size_contrast.hpp"
-#include <Windows.h>
-#include <conio.h>
 using namespace std;
 int main()
 {
