@@ -5,10 +5,13 @@
  **/
 #include <iostream>
 #include "Size_contrast.hpp"
-
+#include <Windows.h>
+#include <conio.h>
 using namespace std;
 int main()
 {
+	system("title 扑克牌之比大小");
+	system("color 02");
 	Size_contrast* Player1 = new Size_contrast();		//new一个类
 	Player1->Game();		//一句话搞定
 	delete Player1;		//回收类
